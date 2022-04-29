@@ -33,7 +33,7 @@
   <h2 align="center">tellor-autopay-matich-graph</h2>
 
   <p align="center">
-    This is the subgraph code for the Tellor Treasuries contract on Ethereum Mainnet.
+    This is the subgraph code for the Tellor Autopay contract on Polygon Mainnet.
     <br />
     <br />
     <a href="https://github.com/tellor-io/tellor-autopay-matich-graph/issues">Report Bug</a>
