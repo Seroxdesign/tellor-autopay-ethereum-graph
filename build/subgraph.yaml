@@ -1,0 +1,36 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: matic
+    source:
+      address: "0x671d444D1fF68393d260D754c2303B9a4f51a8E8"
+      abi: Contract
+      startBlock: 25264694
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - DataFeedFunded
+        - NewDataFeed
+        - OneTimeTipClaimed
+        - TipAdded
+        - TipClaimed
+      abis:
+        - name: Contract
+          file: Contract/abis/Contract.json
+      eventHandlers:
+        - event: DataFeedFunded(bytes32,bytes32,uint256)
+          handler: handleDataFeedFunded
+        - event: NewDataFeed(address,bytes32,bytes32,bytes)
+          handler: handleNewDataFeed
+        - event: OneTimeTipClaimed(bytes32,address,uint256)
+          handler: handleOneTimeTipClaimed
+        - event: TipAdded(address,bytes32,uint256,bytes)
+          handler: handleTipAdded
+        - event: TipClaimed(bytes32,bytes32,address,uint256)
+          handler: handleTipClaimed
+      file: Contract/Contract.wasm

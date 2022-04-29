@@ -1,0 +1,33 @@
+type DataFeedFundedEntity @entity {
+  id: ID!
+  _queryId: Bytes! # bytes32
+  _feedId: Bytes! # bytes32
+  _amount: BigInt! # uint256
+}
+type NewDataFeedEntity @entity {
+  id: ID!
+  _token: Bytes! # address
+  _queryId: Bytes! # bytes32
+  _feedId: Bytes! # bytes32
+  _queryData: Bytes! # bytes
+}
+type OneTimeTipClaimedEntity @entity {
+  id: ID!
+  _queryId: Bytes! # bytes32
+  _token: Bytes! # address
+  _amount: BigInt! # uint256
+}
+type TipAddedEntity @entity {
+  id: ID!
+  _token: Bytes! # address
+  _queryId: Bytes! # bytes32
+  _amount: BigInt! # uint256
+  _queryData: Bytes! # bytes
+}
+type TipClaimedEntity @entity {
+  id: ID!
+  _feedId: Bytes! # bytes32
+  _queryId: Bytes! # bytes32
+  _token: Bytes! # address
+  _amount: BigInt! # uint256
+}
