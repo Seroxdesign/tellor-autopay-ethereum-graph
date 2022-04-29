@@ -1,1 +1,1 @@
-# subgraph-autopay-matic
+# tellor-autopay-matich-graph
