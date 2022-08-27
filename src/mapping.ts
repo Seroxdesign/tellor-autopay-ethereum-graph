@@ -53,7 +53,6 @@ export function handleDataFeedFunded(event: DataFeedFunded): void {
 
 export function handleNewDataFeed(event: NewDataFeed): void {
   let entity = new NewDataFeedEntity(event.block.timestamp.toHex())
-  entity._token = event.params._token;
   entity._queryId = event.params._queryId;
   entity._feedId = event.params._feedId;
   entity._queryData = event.params._queryData;
@@ -63,14 +62,12 @@ export function handleNewDataFeed(event: NewDataFeed): void {
 export function handleOneTimeTipClaimed(event: OneTimeTipClaimed): void {
   let entity = new OneTimeTipClaimedEntity(event.block.timestamp.toHex())
   entity._queryId = event.params._queryId;
-  entity._token = event.params._token;
   entity._amount = event.params._amount;
   entity.save()
 }
 
 export function handleTipAdded(event: TipAdded): void {
   let entity = new TipAddedEntity(event.block.timestamp.toHex())
-  entity._token = event.params._token;
   entity._queryId = event.params._queryId;
   entity._amount = event.params._amount;
   entity._queryData = event.params._queryData;
@@ -81,7 +78,6 @@ export function handleTipClaimed(event: TipClaimed): void {
   let entity = new TipClaimedEntity(event.block.timestamp.toHex())
   entity._feedId = event.params._feedId;
   entity._queryId = event.params._queryId;
-  entity._token = event.params._token;
   entity._amount = event.params._amount;
   entity.save()
 }

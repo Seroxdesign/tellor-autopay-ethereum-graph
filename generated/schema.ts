@@ -19,6 +19,7 @@ export class DataFeedFundedEntity extends Entity {
     this.set("_queryId", Value.fromBytes(Bytes.empty()));
     this.set("_feedId", Value.fromBytes(Bytes.empty()));
     this.set("_amount", Value.fromBigInt(BigInt.zero()));
+    this.set("_feedFunder", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -74,6 +75,15 @@ export class DataFeedFundedEntity extends Entity {
   set _amount(value: BigInt) {
     this.set("_amount", Value.fromBigInt(value));
   }
+
+  get _feedFunder(): BigInt {
+    let value = this.get("_feedFunder");
+    return value!.toBigInt();
+  }
+
+  set _feedFunder(value: BigInt) {
+    this.set("_feedFunder", Value.fromBigInt(value));
+  }
 }
 
 export class NewDataFeedEntity extends Entity {
@@ -81,10 +91,10 @@ export class NewDataFeedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("_token", Value.fromBytes(Bytes.empty()));
     this.set("_queryId", Value.fromBytes(Bytes.empty()));
     this.set("_feedId", Value.fromBytes(Bytes.empty()));
     this.set("_queryData", Value.fromBytes(Bytes.empty()));
+    this.set("_feedFunder", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -114,15 +124,6 @@ export class NewDataFeedEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get _token(): Bytes {
-    let value = this.get("_token");
-    return value!.toBytes();
-  }
-
-  set _token(value: Bytes) {
-    this.set("_token", Value.fromBytes(value));
-  }
-
   get _queryId(): Bytes {
     let value = this.get("_queryId");
     return value!.toBytes();
@@ -149,6 +150,15 @@ export class NewDataFeedEntity extends Entity {
   set _queryData(value: Bytes) {
     this.set("_queryData", Value.fromBytes(value));
   }
+
+  get _feedFunder(): BigInt {
+    let value = this.get("_feedFunder");
+    return value!.toBigInt();
+  }
+
+  set _feedFunder(value: BigInt) {
+    this.set("_feedFunder", Value.fromBigInt(value));
+  }
 }
 
 export class OneTimeTipClaimedEntity extends Entity {
@@ -157,8 +167,8 @@ export class OneTimeTipClaimedEntity extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("_queryId", Value.fromBytes(Bytes.empty()));
-    this.set("_token", Value.fromBytes(Bytes.empty()));
     this.set("_amount", Value.fromBigInt(BigInt.zero()));
+    this.set("_feedCreator", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -200,15 +210,6 @@ export class OneTimeTipClaimedEntity extends Entity {
     this.set("_queryId", Value.fromBytes(value));
   }
 
-  get _token(): Bytes {
-    let value = this.get("_token");
-    return value!.toBytes();
-  }
-
-  set _token(value: Bytes) {
-    this.set("_token", Value.fromBytes(value));
-  }
-
   get _amount(): BigInt {
     let value = this.get("_amount");
     return value!.toBigInt();
@@ -217,6 +218,15 @@ export class OneTimeTipClaimedEntity extends Entity {
   set _amount(value: BigInt) {
     this.set("_amount", Value.fromBigInt(value));
   }
+
+  get _feedCreator(): BigInt {
+    let value = this.get("_feedCreator");
+    return value!.toBigInt();
+  }
+
+  set _feedCreator(value: BigInt) {
+    this.set("_feedCreator", Value.fromBigInt(value));
+  }
 }
 
 export class TipAddedEntity extends Entity {
@@ -224,10 +234,10 @@ export class TipAddedEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("_token", Value.fromBytes(Bytes.empty()));
     this.set("_queryId", Value.fromBytes(Bytes.empty()));
     this.set("_amount", Value.fromBigInt(BigInt.zero()));
     this.set("_queryData", Value.fromBytes(Bytes.empty()));
+    this.set("_tipper", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -253,15 +263,6 @@ export class TipAddedEntity extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
-  }
-
-  get _token(): Bytes {
-    let value = this.get("_token");
-    return value!.toBytes();
-  }
-
-  set _token(value: Bytes) {
-    this.set("_token", Value.fromBytes(value));
   }
 
   get _queryId(): Bytes {
@@ -290,6 +291,15 @@ export class TipAddedEntity extends Entity {
   set _queryData(value: Bytes) {
     this.set("_queryData", Value.fromBytes(value));
   }
+
+  get _tipper(): Bytes {
+    let value = this.get("_tipper");
+    return value!.toBytes();
+  }
+
+  set _tipper(value: Bytes) {
+    this.set("_tipper", Value.fromBytes(value));
+  }
 }
 
 export class TipClaimedEntity extends Entity {
@@ -299,8 +309,8 @@ export class TipClaimedEntity extends Entity {
 
     this.set("_feedId", Value.fromBytes(Bytes.empty()));
     this.set("_queryId", Value.fromBytes(Bytes.empty()));
-    this.set("_token", Value.fromBytes(Bytes.empty()));
     this.set("_amount", Value.fromBigInt(BigInt.zero()));
+    this.set("_tipper", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -348,15 +358,6 @@ export class TipClaimedEntity extends Entity {
     this.set("_queryId", Value.fromBytes(value));
   }
 
-  get _token(): Bytes {
-    let value = this.get("_token");
-    return value!.toBytes();
-  }
-
-  set _token(value: Bytes) {
-    this.set("_token", Value.fromBytes(value));
-  }
-
   get _amount(): BigInt {
     let value = this.get("_amount");
     return value!.toBigInt();
@@ -364,5 +365,14 @@ export class TipClaimedEntity extends Entity {
 
   set _amount(value: BigInt) {
     this.set("_amount", Value.fromBigInt(value));
+  }
+
+  get _tipper(): Bytes {
+    let value = this.get("_tipper");
+    return value!.toBytes();
+  }
+
+  set _tipper(value: Bytes) {
+    this.set("_tipper", Value.fromBytes(value));
   }
 }
