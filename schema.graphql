@@ -10,7 +10,7 @@ type NewDataFeedEntity @entity {
   _queryId: Bytes! # bytes32
   _feedId: Bytes! # bytes32
   _queryData: Bytes! # bytes
-  _feedFunder: BigInt! # address
+  _feedCreator: Bytes! # address
 }
 type OneTimeTipClaimedEntity @entity {
   id: ID!

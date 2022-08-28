@@ -56,6 +56,7 @@ export function handleNewDataFeed(event: NewDataFeed): void {
   entity._queryId = event.params._queryId;
   entity._feedId = event.params._feedId;
   entity._queryData = event.params._queryData;
+  entity._feedCreator = event.params._feedCreator
   entity.save()
 }
 
