@@ -3,7 +3,7 @@ type DataFeedFundedEntity @entity {
   _queryId: Bytes! # bytes32
   _feedId: Bytes! # bytes32
   _amount: BigInt! # uint256
-  _feedFunder: BigInt! # address
+  _feedFunder: Bytes! # address
 }
 type NewDataFeedEntity @entity {
   id: ID!
@@ -16,7 +16,7 @@ type OneTimeTipClaimedEntity @entity {
   id: ID!
   _queryId: Bytes! # bytes32
   _amount: BigInt! # uint256
-  _feedCreator: BigInt! # address
+  _reporter: Bytes! # address
 }
 type TipAddedEntity @entity {
   id: ID!
@@ -30,5 +30,5 @@ type TipClaimedEntity @entity {
   _feedId: Bytes! # bytes32
   _queryId: Bytes! # bytes32
   _amount: BigInt! # uint256
-  _tipper: Bytes! # address
+  _reporter: Bytes! # address
 }
