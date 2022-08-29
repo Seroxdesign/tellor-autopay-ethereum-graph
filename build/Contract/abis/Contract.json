@@ -8,6 +8,11 @@
       },
       {
         "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "_owner",
         "type": "address"
       },
@@ -40,6 +45,12 @@
         "internalType": "uint256",
         "name": "_amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_feedFunder",
+        "type": "address"
       }
     ],
     "name": "DataFeedFunded",
@@ -48,12 +59,6 @@
   {
     "anonymous": false,
     "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
       {
         "indexed": false,
         "internalType": "bytes32",
@@ -71,6 +76,12 @@
         "internalType": "bytes",
         "name": "_queryData",
         "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_feedCreator",
+        "type": "address"
       }
     ],
     "name": "NewDataFeed",
@@ -87,15 +98,15 @@
       },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "_amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_reporter",
+        "type": "address"
       }
     ],
     "name": "OneTimeTipClaimed",
@@ -104,12 +115,6 @@
   {
     "anonymous": false,
     "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
       {
         "indexed": false,
         "internalType": "bytes32",
@@ -127,6 +132,12 @@
         "internalType": "bytes",
         "name": "_queryData",
         "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_tipper",
+        "type": "address"
       }
     ],
     "name": "TipAdded",
@@ -149,15 +160,15 @@
       },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "_amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_reporter",
+        "type": "address"
       }
     ],
     "name": "TipClaimed",
@@ -165,11 +176,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
       {
         "internalType": "bytes32",
         "name": "_queryId",
@@ -188,11 +194,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "_reporter",
-        "type": "address"
-      },
       {
         "internalType": "bytes32",
         "name": "_feedId",
@@ -222,6 +223,25 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "feedsWithFunding",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",
@@ -275,11 +295,6 @@
         "internalType": "bytes32",
         "name": "_queryId",
         "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
       }
     ],
     "name": "getCurrentTip",
@@ -362,22 +377,12 @@
         "internalType": "bytes32",
         "name": "_feedId",
         "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "_queryId",
-        "type": "bytes32"
       }
     ],
     "name": "getDataFeed",
     "outputs": [
       {
         "components": [
-          {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
           {
             "internalType": "uint256",
             "name": "reward",
@@ -402,11 +407,47 @@
             "internalType": "uint256",
             "name": "window",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "priceThreshold",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "feedsWithFundingIndex",
+            "type": "uint256"
           }
         ],
         "internalType": "struct Autopay.FeedDetails",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFundedFeeds",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFundedQueryIds",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
       }
     ],
     "stateMutability": "view",
@@ -468,11 +509,6 @@
         "type": "bytes32"
       },
       {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "_index",
         "type": "uint256"
@@ -507,11 +543,6 @@
         "internalType": "bytes32",
         "name": "_queryId",
         "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
       }
     ],
     "name": "getPastTipCount",
@@ -531,11 +562,6 @@
         "internalType": "bytes32",
         "name": "_queryId",
         "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
       }
     ],
     "name": "getPastTips",
@@ -556,6 +582,25 @@
         "internalType": "struct Autopay.Tip[]",
         "name": "",
         "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_feedId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getQueryIdFromFeedId",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "view",
@@ -668,6 +713,63 @@
     "inputs": [
       {
         "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "queryIdFromDataFeedId",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "queryIdsWithFunding",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "queryIdsWithFundingIndex",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
         "name": "_queryId",
         "type": "bytes32"
       },
@@ -691,11 +793,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
-      {
         "internalType": "bytes32",
         "name": "_queryId",
         "type": "bytes32"
@@ -718,6 +815,11 @@
       {
         "internalType": "uint256",
         "name": "_window",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_priceThreshold",
         "type": "uint256"
       },
       {
@@ -747,11 +849,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      },
-      {
         "internalType": "bytes32",
         "name": "_queryId",
         "type": "bytes32"
@@ -780,11 +877,6 @@
         "type": "bytes32"
       },
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
@@ -801,6 +893,19 @@
         "internalType": "uint256",
         "name": "timestamp",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "token",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

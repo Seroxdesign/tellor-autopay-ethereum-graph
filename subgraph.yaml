@@ -6,7 +6,7 @@ dataSources:
     name: Contract
     network: matic
     source:
-      address: "0x671d444D1fF68393d260D754c2303B9a4f51a8E8"
+      address: "0xD789488E5ee48Ef8b0719843672Bc04c213b648c"
       abi: Contract
       startBlock: 25264694
     mapping:
@@ -23,14 +23,14 @@ dataSources:
         - name: Contract
           file: ./abis/Contract.json
       eventHandlers:
-        - event: DataFeedFunded(bytes32,bytes32,uint256)
+        - event: DataFeedFunded(bytes32,bytes32,uint256,address)
           handler: handleDataFeedFunded
-        - event: NewDataFeed(address,bytes32,bytes32,bytes)
+        - event: NewDataFeed(bytes32,bytes32,bytes,address)
           handler: handleNewDataFeed
-        - event: OneTimeTipClaimed(bytes32,address,uint256)
+        - event: OneTimeTipClaimed(bytes32,uint256,address)
           handler: handleOneTimeTipClaimed
-        - event: TipAdded(address,bytes32,uint256,bytes)
+        - event: TipAdded(bytes32,uint256,bytes,address)
           handler: handleTipAdded
-        - event: TipClaimed(bytes32,bytes32,address,uint256)
+        - event: TipClaimed(bytes32,bytes32,uint256,address)
           handler: handleTipClaimed
       file: ./src/mapping.ts

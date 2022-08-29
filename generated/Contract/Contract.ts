@@ -34,6 +34,10 @@ export class DataFeedFunded__Params {
   get _amount(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
+
+  get _feedFunder(): Address {
+    return this._event.parameters[3].value.toAddress();
+  }
 }
 
 export class NewDataFeed extends ethereum.Event {
@@ -49,20 +53,20 @@ export class NewDataFeed__Params {
     this._event = event;
   }
 
-  get _token(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get _queryId(): Bytes {
-    return this._event.parameters[1].value.toBytes();
+    return this._event.parameters[0].value.toBytes();
   }
 
   get _feedId(): Bytes {
-    return this._event.parameters[2].value.toBytes();
+    return this._event.parameters[1].value.toBytes();
   }
 
   get _queryData(): Bytes {
-    return this._event.parameters[3].value.toBytes();
+    return this._event.parameters[2].value.toBytes();
+  }
+
+  get _feedCreator(): Address {
+    return this._event.parameters[3].value.toAddress();
   }
 }
 
@@ -83,12 +87,12 @@ export class OneTimeTipClaimed__Params {
     return this._event.parameters[0].value.toBytes();
   }
 
-  get _token(): Address {
-    return this._event.parameters[1].value.toAddress();
+  get _amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
   }
 
-  get _amount(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+  get _reporter(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
@@ -105,20 +109,20 @@ export class TipAdded__Params {
     this._event = event;
   }
 
-  get _token(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get _queryId(): Bytes {
-    return this._event.parameters[1].value.toBytes();
+    return this._event.parameters[0].value.toBytes();
   }
 
   get _amount(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 
   get _queryData(): Bytes {
-    return this._event.parameters[3].value.toBytes();
+    return this._event.parameters[2].value.toBytes();
+  }
+
+  get _tipper(): Address {
+    return this._event.parameters[3].value.toAddress();
   }
 }
 
@@ -143,12 +147,12 @@ export class TipClaimed__Params {
     return this._event.parameters[1].value.toBytes();
   }
 
-  get _token(): Address {
-    return this._event.parameters[2].value.toAddress();
+  get _amount(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
   }
 
-  get _amount(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+  get _reporter(): Address {
+    return this._event.parameters[3].value.toAddress();
   }
 }
 
@@ -193,28 +197,32 @@ export class Contract__getDataBeforeResult {
 }
 
 export class Contract__getDataFeedResultValue0Struct extends ethereum.Tuple {
-  get token(): Address {
-    return this[0].toAddress();
-  }
-
   get reward(): BigInt {
-    return this[1].toBigInt();
+    return this[0].toBigInt();
   }
 
   get balance(): BigInt {
-    return this[2].toBigInt();
+    return this[1].toBigInt();
   }
 
   get startTime(): BigInt {
-    return this[3].toBigInt();
+    return this[2].toBigInt();
   }
 
   get interval(): BigInt {
-    return this[4].toBigInt();
+    return this[3].toBigInt();
   }
 
   get window(): BigInt {
+    return this[4].toBigInt();
+  }
+
+  get priceThreshold(): BigInt {
     return this[5].toBigInt();
+  }
+
+  get feedsWithFundingIndex(): BigInt {
+    return this[6].toBigInt();
   }
 }
 
@@ -292,6 +300,29 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  feedsWithFunding(param0: BigInt): Bytes {
+    let result = super.call(
+      "feedsWithFunding",
+      "feedsWithFunding(uint256):(bytes32)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_feedsWithFunding(param0: BigInt): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "feedsWithFunding",
+      "feedsWithFunding(uint256):(bytes32)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
   getCurrentFeeds(_queryId: Bytes): Array<Bytes> {
     let result = super.call(
       "getCurrentFeeds",
@@ -315,30 +346,21 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBytesArray());
   }
 
-  getCurrentTip(_queryId: Bytes, _token: Address): BigInt {
+  getCurrentTip(_queryId: Bytes): BigInt {
     let result = super.call(
       "getCurrentTip",
-      "getCurrentTip(bytes32,address):(uint256)",
-      [
-        ethereum.Value.fromFixedBytes(_queryId),
-        ethereum.Value.fromAddress(_token)
-      ]
+      "getCurrentTip(bytes32):(uint256)",
+      [ethereum.Value.fromFixedBytes(_queryId)]
     );
 
     return result[0].toBigInt();
   }
 
-  try_getCurrentTip(
-    _queryId: Bytes,
-    _token: Address
-  ): ethereum.CallResult<BigInt> {
+  try_getCurrentTip(_queryId: Bytes): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "getCurrentTip",
-      "getCurrentTip(bytes32,address):(uint256)",
-      [
-        ethereum.Value.fromFixedBytes(_queryId),
-        ethereum.Value.fromAddress(_token)
-      ]
+      "getCurrentTip(bytes32):(uint256)",
+      [ethereum.Value.fromFixedBytes(_queryId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -427,17 +449,11 @@ export class Contract extends ethereum.SmartContract {
     );
   }
 
-  getDataFeed(
-    _feedId: Bytes,
-    _queryId: Bytes
-  ): Contract__getDataFeedResultValue0Struct {
+  getDataFeed(_feedId: Bytes): Contract__getDataFeedResultValue0Struct {
     let result = super.call(
       "getDataFeed",
-      "getDataFeed(bytes32,bytes32):((address,uint256,uint256,uint256,uint256,uint256))",
-      [
-        ethereum.Value.fromFixedBytes(_feedId),
-        ethereum.Value.fromFixedBytes(_queryId)
-      ]
+      "getDataFeed(bytes32):((uint256,uint256,uint256,uint256,uint256,uint256,uint256))",
+      [ethereum.Value.fromFixedBytes(_feedId)]
     );
 
     return changetype<Contract__getDataFeedResultValue0Struct>(
@@ -446,16 +462,12 @@ export class Contract extends ethereum.SmartContract {
   }
 
   try_getDataFeed(
-    _feedId: Bytes,
-    _queryId: Bytes
+    _feedId: Bytes
   ): ethereum.CallResult<Contract__getDataFeedResultValue0Struct> {
     let result = super.tryCall(
       "getDataFeed",
-      "getDataFeed(bytes32,bytes32):((address,uint256,uint256,uint256,uint256,uint256))",
-      [
-        ethereum.Value.fromFixedBytes(_feedId),
-        ethereum.Value.fromFixedBytes(_queryId)
-      ]
+      "getDataFeed(bytes32):((uint256,uint256,uint256,uint256,uint256,uint256,uint256))",
+      [ethereum.Value.fromFixedBytes(_feedId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -464,6 +476,52 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       changetype<Contract__getDataFeedResultValue0Struct>(value[0].toTuple())
     );
+  }
+
+  getFundedFeeds(): Array<Bytes> {
+    let result = super.call(
+      "getFundedFeeds",
+      "getFundedFeeds():(bytes32[])",
+      []
+    );
+
+    return result[0].toBytesArray();
+  }
+
+  try_getFundedFeeds(): ethereum.CallResult<Array<Bytes>> {
+    let result = super.tryCall(
+      "getFundedFeeds",
+      "getFundedFeeds():(bytes32[])",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytesArray());
+  }
+
+  getFundedQueryIds(): Array<Bytes> {
+    let result = super.call(
+      "getFundedQueryIds",
+      "getFundedQueryIds():(bytes32[])",
+      []
+    );
+
+    return result[0].toBytesArray();
+  }
+
+  try_getFundedQueryIds(): ethereum.CallResult<Array<Bytes>> {
+    let result = super.tryCall(
+      "getFundedQueryIds",
+      "getFundedQueryIds():(bytes32[])",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytesArray());
   }
 
   getIndexForDataBefore(
@@ -534,15 +592,13 @@ export class Contract extends ethereum.SmartContract {
 
   getPastTipByIndex(
     _queryId: Bytes,
-    _token: Address,
     _index: BigInt
   ): Contract__getPastTipByIndexResultValue0Struct {
     let result = super.call(
       "getPastTipByIndex",
-      "getPastTipByIndex(bytes32,address,uint256):((uint256,uint256))",
+      "getPastTipByIndex(bytes32,uint256):((uint256,uint256))",
       [
         ethereum.Value.fromFixedBytes(_queryId),
-        ethereum.Value.fromAddress(_token),
         ethereum.Value.fromUnsignedBigInt(_index)
       ]
     );
@@ -554,15 +610,13 @@ export class Contract extends ethereum.SmartContract {
 
   try_getPastTipByIndex(
     _queryId: Bytes,
-    _token: Address,
     _index: BigInt
   ): ethereum.CallResult<Contract__getPastTipByIndexResultValue0Struct> {
     let result = super.tryCall(
       "getPastTipByIndex",
-      "getPastTipByIndex(bytes32,address,uint256):((uint256,uint256))",
+      "getPastTipByIndex(bytes32,uint256):((uint256,uint256))",
       [
         ethereum.Value.fromFixedBytes(_queryId),
-        ethereum.Value.fromAddress(_token),
         ethereum.Value.fromUnsignedBigInt(_index)
       ]
     );
@@ -577,30 +631,21 @@ export class Contract extends ethereum.SmartContract {
     );
   }
 
-  getPastTipCount(_queryId: Bytes, _token: Address): BigInt {
+  getPastTipCount(_queryId: Bytes): BigInt {
     let result = super.call(
       "getPastTipCount",
-      "getPastTipCount(bytes32,address):(uint256)",
-      [
-        ethereum.Value.fromFixedBytes(_queryId),
-        ethereum.Value.fromAddress(_token)
-      ]
+      "getPastTipCount(bytes32):(uint256)",
+      [ethereum.Value.fromFixedBytes(_queryId)]
     );
 
     return result[0].toBigInt();
   }
 
-  try_getPastTipCount(
-    _queryId: Bytes,
-    _token: Address
-  ): ethereum.CallResult<BigInt> {
+  try_getPastTipCount(_queryId: Bytes): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "getPastTipCount",
-      "getPastTipCount(bytes32,address):(uint256)",
-      [
-        ethereum.Value.fromFixedBytes(_queryId),
-        ethereum.Value.fromAddress(_token)
-      ]
+      "getPastTipCount(bytes32):(uint256)",
+      [ethereum.Value.fromFixedBytes(_queryId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -609,33 +654,23 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  getPastTips(
-    _queryId: Bytes,
-    _token: Address
-  ): Array<Contract__getPastTipsResultValue0Struct> {
+  getPastTips(_queryId: Bytes): Array<Contract__getPastTipsResultValue0Struct> {
     let result = super.call(
       "getPastTips",
-      "getPastTips(bytes32,address):((uint256,uint256)[])",
-      [
-        ethereum.Value.fromFixedBytes(_queryId),
-        ethereum.Value.fromAddress(_token)
-      ]
+      "getPastTips(bytes32):((uint256,uint256)[])",
+      [ethereum.Value.fromFixedBytes(_queryId)]
     );
 
     return result[0].toTupleArray<Contract__getPastTipsResultValue0Struct>();
   }
 
   try_getPastTips(
-    _queryId: Bytes,
-    _token: Address
+    _queryId: Bytes
   ): ethereum.CallResult<Array<Contract__getPastTipsResultValue0Struct>> {
     let result = super.tryCall(
       "getPastTips",
-      "getPastTips(bytes32,address):((uint256,uint256)[])",
-      [
-        ethereum.Value.fromFixedBytes(_queryId),
-        ethereum.Value.fromAddress(_token)
-      ]
+      "getPastTips(bytes32):((uint256,uint256)[])",
+      [ethereum.Value.fromFixedBytes(_queryId)]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -644,6 +679,29 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       value[0].toTupleArray<Contract__getPastTipsResultValue0Struct>()
     );
+  }
+
+  getQueryIdFromFeedId(_feedId: Bytes): Bytes {
+    let result = super.call(
+      "getQueryIdFromFeedId",
+      "getQueryIdFromFeedId(bytes32):(bytes32)",
+      [ethereum.Value.fromFixedBytes(_feedId)]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_getQueryIdFromFeedId(_feedId: Bytes): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "getQueryIdFromFeedId",
+      "getQueryIdFromFeedId(bytes32):(bytes32)",
+      [ethereum.Value.fromFixedBytes(_feedId)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
   }
 
   getRewardClaimedStatus(
@@ -779,6 +837,75 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  queryIdFromDataFeedId(param0: Bytes): Bytes {
+    let result = super.call(
+      "queryIdFromDataFeedId",
+      "queryIdFromDataFeedId(bytes32):(bytes32)",
+      [ethereum.Value.fromFixedBytes(param0)]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_queryIdFromDataFeedId(param0: Bytes): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "queryIdFromDataFeedId",
+      "queryIdFromDataFeedId(bytes32):(bytes32)",
+      [ethereum.Value.fromFixedBytes(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  queryIdsWithFunding(param0: BigInt): Bytes {
+    let result = super.call(
+      "queryIdsWithFunding",
+      "queryIdsWithFunding(uint256):(bytes32)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+
+    return result[0].toBytes();
+  }
+
+  try_queryIdsWithFunding(param0: BigInt): ethereum.CallResult<Bytes> {
+    let result = super.tryCall(
+      "queryIdsWithFunding",
+      "queryIdsWithFunding(uint256):(bytes32)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  queryIdsWithFundingIndex(param0: Bytes): BigInt {
+    let result = super.call(
+      "queryIdsWithFundingIndex",
+      "queryIdsWithFundingIndex(bytes32):(uint256)",
+      [ethereum.Value.fromFixedBytes(param0)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_queryIdsWithFundingIndex(param0: Bytes): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "queryIdsWithFundingIndex",
+      "queryIdsWithFundingIndex(bytes32):(uint256)",
+      [ethereum.Value.fromFixedBytes(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   retrieveData(_queryId: Bytes, _timestamp: BigInt): Bytes {
     let result = super.call(
       "retrieveData",
@@ -826,32 +953,25 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  tips(param0: Bytes, param1: Address, param2: BigInt): Contract__tipsResult {
-    let result = super.call(
-      "tips",
-      "tips(bytes32,address,uint256):(uint256,uint256)",
-      [
-        ethereum.Value.fromFixedBytes(param0),
-        ethereum.Value.fromAddress(param1),
-        ethereum.Value.fromUnsignedBigInt(param2)
-      ]
-    );
+  tips(param0: Bytes, param1: BigInt): Contract__tipsResult {
+    let result = super.call("tips", "tips(bytes32,uint256):(uint256,uint256)", [
+      ethereum.Value.fromFixedBytes(param0),
+      ethereum.Value.fromUnsignedBigInt(param1)
+    ]);
 
     return new Contract__tipsResult(result[0].toBigInt(), result[1].toBigInt());
   }
 
   try_tips(
     param0: Bytes,
-    param1: Address,
-    param2: BigInt
+    param1: BigInt
   ): ethereum.CallResult<Contract__tipsResult> {
     let result = super.tryCall(
       "tips",
-      "tips(bytes32,address,uint256):(uint256,uint256)",
+      "tips(bytes32,uint256):(uint256,uint256)",
       [
         ethereum.Value.fromFixedBytes(param0),
-        ethereum.Value.fromAddress(param1),
-        ethereum.Value.fromUnsignedBigInt(param2)
+        ethereum.Value.fromUnsignedBigInt(param1)
       ]
     );
     if (result.reverted) {
@@ -861,6 +981,21 @@ export class Contract extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new Contract__tipsResult(value[0].toBigInt(), value[1].toBigInt())
     );
+  }
+
+  token(): Address {
+    let result = super.call("token", "token():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_token(): ethereum.CallResult<Address> {
+    let result = super.tryCall("token", "token():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 }
 
@@ -885,12 +1020,16 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _owner(): Address {
+  get _token(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
+  get _owner(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
   get _fee(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 }
 
@@ -919,16 +1058,12 @@ export class ClaimOneTimeTipCall__Inputs {
     this._call = call;
   }
 
-  get _token(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
   get _queryId(): Bytes {
-    return this._call.inputValues[1].value.toBytes();
+    return this._call.inputValues[0].value.toBytes();
   }
 
   get _timestamps(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
+    return this._call.inputValues[1].value.toBigIntArray();
   }
 }
 
@@ -957,20 +1092,16 @@ export class ClaimTipCall__Inputs {
     this._call = call;
   }
 
-  get _reporter(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
   get _feedId(): Bytes {
-    return this._call.inputValues[1].value.toBytes();
+    return this._call.inputValues[0].value.toBytes();
   }
 
   get _queryId(): Bytes {
-    return this._call.inputValues[2].value.toBytes();
+    return this._call.inputValues[1].value.toBytes();
   }
 
   get _timestamps(): Array<BigInt> {
-    return this._call.inputValues[3].value.toBigIntArray();
+    return this._call.inputValues[2].value.toBigIntArray();
   }
 }
 
@@ -1037,27 +1168,27 @@ export class SetupDataFeedCall__Inputs {
     this._call = call;
   }
 
-  get _token(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
   get _queryId(): Bytes {
-    return this._call.inputValues[1].value.toBytes();
+    return this._call.inputValues[0].value.toBytes();
   }
 
   get _reward(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get _startTime(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get _interval(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get _window(): BigInt {
+    return this._call.inputValues[4].value.toBigInt();
+  }
+
+  get _priceThreshold(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
   }
 
@@ -1091,20 +1222,16 @@ export class TipCall__Inputs {
     this._call = call;
   }
 
-  get _token(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
   get _queryId(): Bytes {
-    return this._call.inputValues[1].value.toBytes();
+    return this._call.inputValues[0].value.toBytes();
   }
 
   get _amount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get _queryData(): Bytes {
-    return this._call.inputValues[3].value.toBytes();
+    return this._call.inputValues[2].value.toBytes();
   }
 }
 
