@@ -14,6 +14,7 @@ export function handleDataFeedFunded(event: DataFeedFunded): void {
   entity._feedId = event.params._feedId;
   entity._amount = event.params._amount;
   entity._feedFunder = event.params._feedFunder;
+
   entity.save()
 
   // Note: If a handler doesn't require existing field values, it is faster
@@ -58,6 +59,15 @@ export function handleNewDataFeed(event: NewDataFeed): void {
   entity._feedId = event.params._feedId;
   entity._queryData = event.params._queryData;
   entity._feedCreator = event.params._feedCreator
+  
+  let contract = Contract.bind(event.address)
+  let callResult = contract.try_getDataFeed(event.params._feedId)
+  if(callResult.reverted) {
+    console.log('reverted')
+  } else {
+    console.log('success')
+  }
+
   entity.save()
 }
 

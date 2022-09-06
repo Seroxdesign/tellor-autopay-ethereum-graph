@@ -95,6 +95,10 @@ export class NewDataFeedEntity extends Entity {
     this.set("_feedId", Value.fromBytes(Bytes.empty()));
     this.set("_queryData", Value.fromBytes(Bytes.empty()));
     this.set("_feedCreator", Value.fromBytes(Bytes.empty()));
+    this.set("_interval", Value.fromBigInt(BigInt.zero()));
+    this.set("_reward", Value.fromBigInt(BigInt.zero()));
+    this.set("_startTime", Value.fromBigInt(BigInt.zero()));
+    this.set("_window", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -158,6 +162,42 @@ export class NewDataFeedEntity extends Entity {
 
   set _feedCreator(value: Bytes) {
     this.set("_feedCreator", Value.fromBytes(value));
+  }
+
+  get _interval(): BigInt {
+    let value = this.get("_interval");
+    return value!.toBigInt();
+  }
+
+  set _interval(value: BigInt) {
+    this.set("_interval", Value.fromBigInt(value));
+  }
+
+  get _reward(): BigInt {
+    let value = this.get("_reward");
+    return value!.toBigInt();
+  }
+
+  set _reward(value: BigInt) {
+    this.set("_reward", Value.fromBigInt(value));
+  }
+
+  get _startTime(): BigInt {
+    let value = this.get("_startTime");
+    return value!.toBigInt();
+  }
+
+  set _startTime(value: BigInt) {
+    this.set("_startTime", Value.fromBigInt(value));
+  }
+
+  get _window(): BigInt {
+    let value = this.get("_window");
+    return value!.toBigInt();
+  }
+
+  set _window(value: BigInt) {
+    this.set("_window", Value.fromBigInt(value));
   }
 }
 
