@@ -65,9 +65,11 @@ export function handleNewDataFeed(event: NewDataFeed): void {
   if(callResult.reverted) {
     console.log('reverted')
   } else {
-    console.log('success')
+    entity._interval = callResult.value.interval;
+    entity._reward = callResult.value.reward;
+    entity._startTime = callResult.value.startTime;
+    entity._window = callResult.value.window;
   }
-
   entity.save()
 }
 
