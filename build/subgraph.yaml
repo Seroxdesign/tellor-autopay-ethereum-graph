@@ -1,8 +1,10 @@
 specVersion: 0.0.4
 schema:
   file: schema.graphql
+features:
+  - nonFatalErrors
 dataSources:
-  - kind: ethereum
+  - kind: ethereum/contract
     name: Contract
     network: matic
     source:
@@ -19,6 +21,7 @@ dataSources:
         - OneTimeTipClaimed
         - TipAdded
         - TipClaimed
+        - DataFeed
       abis:
         - name: Contract
           file: Contract\abis\Contract.json
