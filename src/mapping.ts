@@ -75,6 +75,7 @@ export function handleNewDataFeed(event: NewDataFeed): void {
     dataFeed._startTime = callResult.startTime
     dataFeed._window = callResult.window
     dataFeed._queryData = event.params._queryData
+    dataFeed.txnHash = event.transaction.hash
   }
 
   dataFeed.save()
