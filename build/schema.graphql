@@ -39,4 +39,5 @@ type DataFeedEntity @entity {
   _interval: BigInt! # uint256
   _window: BigInt! # uint256
   _priceThreshold: BigInt! # uint256
+  _queryData: Bytes! # bytes
 }

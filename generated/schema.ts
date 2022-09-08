@@ -387,6 +387,7 @@ export class DataFeedEntity extends Entity {
     this.set("_interval", Value.fromBigInt(BigInt.zero()));
     this.set("_window", Value.fromBigInt(BigInt.zero()));
     this.set("_priceThreshold", Value.fromBigInt(BigInt.zero()));
+    this.set("_queryData", Value.fromBytes(Bytes.empty()));
   }
 
   save(): void {
@@ -457,5 +458,14 @@ export class DataFeedEntity extends Entity {
 
   set _priceThreshold(value: BigInt) {
     this.set("_priceThreshold", Value.fromBigInt(value));
+  }
+
+  get _queryData(): Bytes {
+    let value = this.get("_queryData");
+    return value!.toBytes();
+  }
+
+  set _queryData(value: Bytes) {
+    this.set("_queryData", Value.fromBytes(value));
   }
 }

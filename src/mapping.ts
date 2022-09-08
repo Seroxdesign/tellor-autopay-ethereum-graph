@@ -74,6 +74,7 @@ export function handleNewDataFeed(event: NewDataFeed): void {
     dataFeed._reward = callResult.reward
     dataFeed._startTime = callResult.startTime
     dataFeed._window = callResult.window
+    dataFeed._queryData = event.params._queryData
   }
 
   dataFeed.save()
