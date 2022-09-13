@@ -376,3 +376,106 @@ export class TipClaimedEntity extends Entity {
     this.set("_reporter", Value.fromBytes(value));
   }
 }
+
+export class DataFeedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("_reward", Value.fromBigInt(BigInt.zero()));
+    this.set("_startTime", Value.fromBigInt(BigInt.zero()));
+    this.set("_interval", Value.fromBigInt(BigInt.zero()));
+    this.set("_window", Value.fromBigInt(BigInt.zero()));
+    this.set("_priceThreshold", Value.fromBigInt(BigInt.zero()));
+    this.set("_queryData", Value.fromBytes(Bytes.empty()));
+    this.set("txnHash", Value.fromBytes(Bytes.empty()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save DataFeedEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type DataFeedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("DataFeedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DataFeedEntity | null {
+    return changetype<DataFeedEntity | null>(store.get("DataFeedEntity", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get _reward(): BigInt {
+    let value = this.get("_reward");
+    return value!.toBigInt();
+  }
+
+  set _reward(value: BigInt) {
+    this.set("_reward", Value.fromBigInt(value));
+  }
+
+  get _startTime(): BigInt {
+    let value = this.get("_startTime");
+    return value!.toBigInt();
+  }
+
+  set _startTime(value: BigInt) {
+    this.set("_startTime", Value.fromBigInt(value));
+  }
+
+  get _interval(): BigInt {
+    let value = this.get("_interval");
+    return value!.toBigInt();
+  }
+
+  set _interval(value: BigInt) {
+    this.set("_interval", Value.fromBigInt(value));
+  }
+
+  get _window(): BigInt {
+    let value = this.get("_window");
+    return value!.toBigInt();
+  }
+
+  set _window(value: BigInt) {
+    this.set("_window", Value.fromBigInt(value));
+  }
+
+  get _priceThreshold(): BigInt {
+    let value = this.get("_priceThreshold");
+    return value!.toBigInt();
+  }
+
+  set _priceThreshold(value: BigInt) {
+    this.set("_priceThreshold", Value.fromBigInt(value));
+  }
+
+  get _queryData(): Bytes {
+    let value = this.get("_queryData");
+    return value!.toBytes();
+  }
+
+  set _queryData(value: Bytes) {
+    this.set("_queryData", Value.fromBytes(value));
+  }
+
+  get txnHash(): Bytes {
+    let value = this.get("txnHash");
+    return value!.toBytes();
+  }
+
+  set txnHash(value: Bytes) {
+    this.set("txnHash", Value.fromBytes(value));
+  }
+}

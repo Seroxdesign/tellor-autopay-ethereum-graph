@@ -32,3 +32,13 @@ type TipClaimedEntity @entity {
   _amount: BigInt! # uint256
   _reporter: Bytes! # address
 }
+type DataFeedEntity @entity {
+  id: ID!
+  _reward: BigInt! # uint256
+  _startTime: BigInt! # uint256
+  _interval: BigInt! # uint256
+  _window: BigInt! # uint256
+  _priceThreshold: BigInt! # uint256
+  _queryData: Bytes! # bytes
+  txnHash: Bytes! # bytes
+}
