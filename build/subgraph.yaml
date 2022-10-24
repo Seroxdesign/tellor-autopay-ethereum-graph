@@ -1,16 +1,14 @@
 specVersion: 0.0.4
 schema:
   file: schema.graphql
-features:
-  - nonFatalErrors
 dataSources:
-  - kind: ethereum/contract
+  - kind: ethereum
     name: Contract
     network: matic
     source:
-      address: "0xD789488E5ee48Ef8b0719843672Bc04c213b648c"
+      address: "0xA33ca1062762c8591E29E65bf7aC7ae8EC88b183"
       abi: Contract
-      startBlock: 25264694
+      startBlock: 25223393
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -26,14 +24,15 @@ dataSources:
         - name: Contract
           file: Contract\abis\Contract.json
       eventHandlers:
-        - event: DataFeedFunded(bytes32,bytes32,uint256,address)
+        - event: DataFeedFunded(indexed bytes32,indexed bytes32,indexed
+            uint256,address,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
           handler: handleDataFeedFunded
-        - event: NewDataFeed(bytes32,bytes32,bytes,address)
+        - event: NewDataFeed(indexed bytes32,indexed bytes32,bytes,address)
           handler: handleNewDataFeed
-        - event: OneTimeTipClaimed(bytes32,uint256,address)
+        - event: OneTimeTipClaimed(indexed bytes32,indexed uint256,indexed address)
           handler: handleOneTimeTipClaimed
-        - event: TipAdded(bytes32,uint256,bytes,address)
+        - event: TipAdded(indexed bytes32,indexed uint256,bytes,address)
           handler: handleTipAdded
-        - event: TipClaimed(bytes32,bytes32,uint256,address)
+        - event: TipClaimed(indexed bytes32,indexed bytes32,indexed uint256,address)
           handler: handleTipClaimed
       file: Contract\Contract.wasm
