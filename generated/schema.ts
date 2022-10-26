@@ -28,7 +28,8 @@ export class DataFeedFundedEntity extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type DataFeedFundedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save DataFeedFundedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("DataFeedFundedEntity", id.toString(), this);
     }
@@ -103,7 +104,8 @@ export class NewDataFeedEntity extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type NewDataFeedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save NewDataFeedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("NewDataFeedEntity", id.toString(), this);
     }
@@ -180,7 +182,8 @@ export class OneTimeTipClaimedEntity extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type OneTimeTipClaimedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save OneTimeTipClaimedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("OneTimeTipClaimedEntity", id.toString(), this);
     }
@@ -246,7 +249,8 @@ export class TipAddedEntity extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type TipAddedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save TipAddedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("TipAddedEntity", id.toString(), this);
     }
@@ -319,7 +323,8 @@ export class TipClaimedEntity extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type TipClaimedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save TipClaimedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("TipClaimedEntity", id.toString(), this);
     }
@@ -397,7 +402,8 @@ export class DataFeedEntity extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type DataFeedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save DataFeedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("DataFeedEntity", id.toString(), this);
     }
