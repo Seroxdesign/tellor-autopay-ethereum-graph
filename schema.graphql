@@ -24,6 +24,8 @@ type TipAddedEntity @entity {
   _amount: BigInt! # uint256
   _queryData: Bytes! # bytes
   _tipper: Bytes! # address
+  _startTime: BigInt! # uint256
+  txnHash: Bytes! # bytes
 }
 type TipClaimedEntity @entity {
   id: ID!
