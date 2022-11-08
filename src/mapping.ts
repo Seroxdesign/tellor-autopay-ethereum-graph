@@ -96,6 +96,8 @@ export function handleTipAdded(event: TipAdded): void {
   entity._amount = event.params._amount;
   entity._queryData = event.params._queryData;
   entity._tipper = event.params._tipper;
+  entity.txnHash = event.transaction.hash;
+  entity._startTime = event.block.timestamp;
   entity.save()
 }
 
