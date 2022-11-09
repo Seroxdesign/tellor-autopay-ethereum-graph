@@ -6,7 +6,7 @@ dataSources:
     name: Contract
     network: matic
     source:
-      address: "0xA33ca1062762c8591E29E65bf7aC7ae8EC88b183"
+      address: "0x1775704809521D4D7ee65B6aFb93816af73476ec"
       abi: Contract
       startBlock: 25223393
     mapping:
@@ -22,7 +22,7 @@ dataSources:
         - DataFeed
       abis:
         - name: Contract
-          file: Contract\abis\Contract.json
+          file: Contract/abis/Contract.json
       eventHandlers:
         - event: DataFeedFunded(indexed bytes32,indexed bytes32,indexed
             uint256,address,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256))
@@ -35,4 +35,4 @@ dataSources:
           handler: handleTipAdded
         - event: TipClaimed(indexed bytes32,indexed bytes32,indexed uint256,address)
           handler: handleTipClaimed
-      file: Contract\Contract.wasm
+      file: Contract/Contract.wasm
