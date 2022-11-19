@@ -4,9 +4,9 @@ schema:
 dataSources:
   - kind: ethereum
     name: Contract
-    network: matic
+    network: mainnet
     source:
-      address: "0x1775704809521D4D7ee65B6aFb93816af73476ec"
+      address: "0x1F033Cb8A2Df08a147BC512723fd0da3FEc5cCA7"
       abi: Contract
       startBlock: 25223393
     mapping:
