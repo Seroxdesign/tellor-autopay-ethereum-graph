@@ -211,14 +211,6 @@ export class Contract__getDataAfterResult {
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     return map;
   }
-
-  get_value(): Bytes {
-    return this.value0;
-  }
-
-  get_timestampRetrieved(): BigInt {
-    return this.value1;
-  }
 }
 
 export class Contract__getDataBeforeResult {
@@ -235,14 +227,6 @@ export class Contract__getDataBeforeResult {
     map.set("value0", ethereum.Value.fromBytes(this.value0));
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     return map;
-  }
-
-  get_value(): Bytes {
-    return this.value0;
-  }
-
-  get_timestampRetrieved(): BigInt {
-    return this.value1;
   }
 }
 
@@ -351,14 +335,6 @@ export class Contract__getIndexForDataAfterResult {
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     return map;
   }
-
-  get_found(): boolean {
-    return this.value0;
-  }
-
-  get_index(): BigInt {
-    return this.value1;
-  }
 }
 
 export class Contract__getIndexForDataBeforeResult {
@@ -376,14 +352,6 @@ export class Contract__getIndexForDataBeforeResult {
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     return map;
   }
-
-  get_found(): boolean {
-    return this.value0;
-  }
-
-  get_index(): BigInt {
-    return this.value1;
-  }
 }
 
 export class Contract__getMultipleValuesBeforeResult {
@@ -400,14 +368,6 @@ export class Contract__getMultipleValuesBeforeResult {
     map.set("value0", ethereum.Value.fromBytesArray(this.value0));
     map.set("value1", ethereum.Value.fromUnsignedBigIntArray(this.value1));
     return map;
-  }
-
-  get_values(): Array<Bytes> {
-    return this.value0;
-  }
-
-  get_timestamps(): Array<BigInt> {
-    return this.value1;
   }
 }
 
@@ -457,18 +417,6 @@ export class Contract__tipsResult {
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
   }
-
-  getAmount(): BigInt {
-    return this.value0;
-  }
-
-  getTimestamp(): BigInt {
-    return this.value1;
-  }
-
-  getCumulativeTips(): BigInt {
-    return this.value2;
-  }
 }
 
 export class Contract__valueForResult {
@@ -488,18 +436,6 @@ export class Contract__valueForResult {
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
     map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
-  }
-
-  get_value(): BigInt {
-    return this.value0;
-  }
-
-  get_timestamp(): BigInt {
-    return this.value1;
-  }
-
-  get_statusCode(): BigInt {
-    return this.value2;
   }
 }
 
