@@ -37,6 +37,7 @@ type TipClaimedEntity @entity {
 type DataFeedEntity @entity {
   id: ID!
   _reward: BigInt! # uint256
+  _balance: BigInt! #bytes
   _startTime: BigInt! # uint256
   _interval: BigInt! # uint256
   _window: BigInt! # uint256

@@ -6,9 +6,9 @@ dataSources:
     name: Contract
     network: mainnet
     source:
-      address: "0x1F033Cb8A2Df08a147BC512723fd0da3FEc5cCA7"
+      address: "0x9BE9B0CFA89Ea800556C6efbA67b455D336db1D0"
       abi: Contract
-      startBlock: 15818702
+      startBlock: 16449170
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -28,8 +28,6 @@ dataSources:
           handler: handleDataFeedFunded
         - event: NewDataFeed(indexed bytes32,indexed bytes32,bytes,address)
           handler: handleNewDataFeed
-        - event: OneTimeTipClaimed(indexed bytes32,indexed uint256,indexed address)
-          handler: handleOneTimeTipClaimed
         - event: TipAdded(indexed bytes32,indexed uint256,bytes,address)
           handler: handleTipAdded
         - event: TipClaimed(indexed bytes32,indexed bytes32,indexed uint256,address)
